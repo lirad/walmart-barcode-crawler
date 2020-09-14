@@ -18,7 +18,7 @@ end
 def fetch_car_models(car_brand)
   html_car_model = open("https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/#{car_brand}").read
   car_brand = Nokogiri::HTML(html_car_model)
-  car_models = car_brand.css("div.sc-19se6iy-1.dGiePB > form > div:nth-child(1) > div:nth-child(3) > div.sc-125sd1n-2.gcOAdt > div > div > select")
+  car_models = car_brand.css("div.sc-19se6iy-1.dGiePB > form > div:nth-child(1) > div:nth-child(3) > div.sc-125sd1n-2.gcOAdt > div > div > select option")
   return car_models
 end
 
@@ -33,7 +33,8 @@ when "list"
 else
   fetch_car_brands.each do |n|
     unless n.match?(selected_car_brand.upcase)
-      puts fetch_car_models(selected_car_brand)
+      fetch_cara_types = fetch_car_models(selected_car_brand)
+      fetch_cara_types.each_with_index{|value, index| puts  "#{index}. #{value.text} " }
       puts "Please select or type a model from the list"
       selected_car_type = gets.chomp.downcase
       break
