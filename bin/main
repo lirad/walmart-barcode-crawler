@@ -1,79 +1,47 @@
 #!/usr/bin/env ruby
-require_relative('../lib/players.rb')
-require_relative('../lib/game.rb')
 
-def validate_name?(name, prev_player = nil)
-  error_msg = 'invalid name, player name must be unique and between 3-20 letters'
-  if prev_player.nil?
-    if !name.empty? && name.length.between?(3, 20)
-      true
-    else
-      puts error_msg
-      false
-    end
-  elsif prev_player == 'player1'
-    if !name.empty? && name.length.between?(3, 20) && name.capitalize != $player1_name
-      true
-    else
-      puts error_msg
-      false
-    end
+require "nokogiri"
+require "open-uri"
+
+def fetch_car_brands
+  html_data = open("https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios").read
+  nokogiri_object = Nokogiri::HTML(html_data)
+  states = nokogiri_object.css(".sc-1a202fr-0")
+  car_brands = nokogiri_object.css(".sc-125sd1n-5 .g98wuw-1 option")
+  car_models_list = []
+  car_brands.each do |brands|
+    car_models_list << brands.content
   end
+  return car_models_list
 end
 
-def player_name(player_name)
-  p "Hey #{player_name}, whats your name?"
-  name = gets.chomp
-  if player_name == 'player1'
-    validate_name?(name) ? name : player_name(player_name)
-  elsif player_name == 'player2'
-    validate_name?(name, 'player1') ? name : player_name(player_name)
-  end
+def fetch_car_models(car_brand)
+  html_car_model = open("https://www.olx.com.br/autos-e-pecas/carros-vans-e-utilitarios/#{car_brand}").read
+  car_brand = Nokogiri::HTML(html_car_model)
+  car_models = car_brand.css("div.sc-19se6iy-1.dGiePB > form > div:nth-child(1) > div:nth-child(3) > div.sc-125sd1n-2.gcOAdt > div > div > select")
+  return car_models
 end
 
-def player_token(player_name)
-  p "Hello #{player_name}, Please select a token X or O"
-  token = gets.chomp
-  if Players.validate_token?(token)
-    p "#{token.capitalize}, Nice choice!"
-    token.capitalize
-  else
-    p 'Invalid token, please choose X or O'
-    player_token(player_name)
+# List user car brands
+puts "Please type a Car Brand or type 'List' to see all options"
+selected_car_brand = gets.chomp.downcase
+case selected_car_brand
+when "list"
+  fetch_car_brands.each_with_index do |value, index|
+    puts "#{index}. #{value} "
   end
-end
-
-$player1_name = player_name('player1').capitalize
-player1_token = player_token($player1_name)
-player1 = Players.new($player1_name, player1_token)
-
-player2_name = player_name('player2').capitalize
-player2_token = %w[x X].include?(player1_token) ? 'O' : 'X'
-puts "hey #{player2_name}, your token is #{player2_token.capitalize}."
-player2 = Players.new(player2_name, player2_token)
-
-players = [{ name: player1.name, token: player1_token }, { name: player2.name, token: player2_token }]
-
-game = Game.new(players)
-
-while game.game_over == false
-  current_player_turn = game.players[game.current_player][:name]
-  puts "#{current_player_turn} Please select a number from the board:"
-  game.board_display.each { |n| p n }
-  select_number = gets.chomp.to_i
-  next unless game.position_validation?(select_number)
-
-  game.change_board(select_number)
-  game.board_display.each { |n| p n }
-  def iterate(player, select_number, game)
-    player.player_moves << select_number
-    if game.game_over_conditions(player.player_moves) == 'win'
-      puts "#{player.name} wins!!!!!"
-      game.game_over = true
-    elsif game.game_over_conditions(player.player_moves) == 'draw'
-      puts "it's a draw!!"
-      game.game_over = true
+else
+  fetch_car_brands.each do |n|
+    unless n.match?(selected_car_brand.upcase)
+      puts fetch_car_models(selected_car_brand)
+      puts "Please select or type a model from the list"
+      selected_car_type = gets.chomp.downcase
+      break
     end
   end
-  current_player_turn == player1.name ? iterate(player1, select_number, game) : iterate(player2, select_number, game)
 end
+# fetch_car_models(selected_car_brand)
+
+# Get user car model
+# Search trough every state
+# Give pricing
