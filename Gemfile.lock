@@ -10,6 +10,7 @@ PLATFORMS
 
 DEPENDENCIES
   nokogiri (~> 1.10.10)
+  watir (~> 6.17.0)
 
 BUNDLED WITH
    2.1.4
