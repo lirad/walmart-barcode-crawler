@@ -1,16 +1,9 @@
-class Crawler do
-  
-end
+require 'watir'
 
-class Crawler do
-  
-end
+class Crawler
+  attr_reader :browser
 
-class Car do
-
-  attr_reader: display_brands, display_models
-
-  def initialize(car_brand) do
-    @car_brand = car_brand
+  def initialize
+    @browser = Watir::Browser.new
   end
 end

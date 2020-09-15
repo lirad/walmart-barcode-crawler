@@ -1,55 +1,25 @@
 #!/usr/bin/env ruby
-require "watir"
-require "nokogiri"
-require "csv"
+require_relative('../lib/crawler.rb')
+require_relative('../lib/walmart.rb')
+require_relative('../lib/files_generator.rb')
 
-$browser = Watir::Browser.new
+# bar_codes = %w[00779129302256 00779129302553 00750630624418 00779129302263 00779129302259
+#                00779129303822 00779129303779 00779129302258 00779129303780 00007940005291
+#                00007940030054 00750630621496 00750630621497 00000007506301 00000007506299]
 
-bar_codes = %w[00779129302256 00779129302553 00750630624418 00779129302263 00779129302259
-               00779129303822 00779129303779 00779129302258 00779129303780 00007940005291
-               00007940030054 00750630621496 00750630621497 00000007506301 00000007506299]
-
-$browser.goto "https://super.walmart.com.mx/"
-$browser.element(class: "button_icon__1dMbF").click
-
-def crawl_products(bar_code)
-  $browser.goto "https://super.walmart.com.mx/productos?Ntt=#{bar_code}"
-  sleep(2)
-  return $browser.html
-end
-
-def get_size_and_weight(product_name)
-  name = product_name.split
-  size = 0
-  weight = nil
-  name.each_with_index do |n, index|
-    if Integer(n, exception: false)
-      size = n.to_i
-      weight =  name[index+1]
-    end
-  end
-  return [size, weight]
-end
-
-crawled_products = Hash.new
-
-bar_codes.each_with_index do |n,index|
-  product = crawl_products(n)
-  page = Nokogiri::HTML.parse(product)
-  product_name = page.css("div.product_container__1Z_GP.grid_productBox__2MtRC .product_name__1669g a .text_text__1DYNl")
-  product_price = page.css("div.product_container__1Z_GP.grid_productBox__2MtRC .price-and-promotions_currentPrice__XT_Iz")
-  size_and_weight = get_size_and_weight(product_name.text)
-  product_size = size_and_weight[0]
-  product_weight = size_and_weight[1]
-  crawled_products[index] = {"ProductName": product_name.text, "Price": product_price.text, "Size": product_size, "Weight": product_weight, "Retail": 'Walmart'}
-end
+# bar_codes = %w[00779129302256 00779129302553]
 
 
-data = CSV.generate do |csv|
-  csv <<  %w[Product Name Price Size Weight Retail]
-  crawled_products.each do |k, v|
-    csv << [v[:ProductName], v[:Price], v[:Size], v[:Weight], v[:Retail]]
-  end
-end
+files_generator = FilesGenerator.new
 
-File.write("products.csv", data)
+puts 'Verifying bar codes input files'
+bar_codes = files_generator.read_input_csv
+walmart = WalmartMx.new(bar_codes)
+
+puts 'Starting loop'
+walmart.bar_code_loop
+crawled_products = walmart.crawled_products
+
+puts 'Generating output file'
+files_generator = FilesGenerator.new
+files_generator.generate_output_csv(crawled_products)
