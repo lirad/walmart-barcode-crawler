@@ -3,13 +3,13 @@ require "watir"
 require "nokogiri"
 
 class WalmartMx < Crawler
-  attr_reader :crawled_products, :crawled_counter
+  attr_reader :crawled_products, :crawled_counter, :crawler_errors
 
   @crawled_html = nil
   
-
   def initialize(bar_codes)
     @crawled_counter = 0
+    @crawler_errors = []
     @bar_codes = bar_codes
     @crawled_products = {}
     @crawler = Crawler.new
@@ -62,7 +62,7 @@ class WalmartMx < Crawler
     @bar_codes.each_with_index do |n, index|
       @crawled_html = crawl_products(n)
       @page = Nokogiri::HTML.parse(@crawled_html)
-      create_record(index) if product_validation 
+      product_validation ? create_record(index) : @crawler_errors << n
     end
   end
 end

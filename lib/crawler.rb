@@ -6,4 +6,4 @@ class Crawler
   def initialize
     @browser = Watir::Browser.new
   end
-end
+end  

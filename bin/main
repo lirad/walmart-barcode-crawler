@@ -8,13 +8,18 @@ files_generator = FilesGenerator.new
 puts '📦 Verifying bar codes input files'
 bar_codes = files_generator.read_input_csv
 walmart = WalmartMx.new(bar_codes)
-puts "✅ #{bar_codes.length} bar code(s) detected"
+puts "👀 #{bar_codes.length} bar code(s) detected"
 
 puts '⚡ Started crawling'
 walmart.bar_code_loop
 crawled_products = walmart.crawled_products
+crawler_errors = walmart.crawler_errors
 puts "🏁 Finished: #{walmart.crawled_counter} out of #{bar_codes.length} products crawled."
 
 puts '📂 Generating output file'
 files_generator = FilesGenerator.new
 files_generator.generate_output_csv(crawled_products)
+puts '✅ Sucessful Crawls'
+puts files_generator.table_generator(crawled_products)
+puts '❌ Crawling errors'
+puts files_generator.table_errors(crawler_errors)
