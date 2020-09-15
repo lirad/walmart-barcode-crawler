@@ -35,10 +35,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nokogiri (~> 1.10.10)
+  nokogiri
   rspec
-  terminal-table (= 1.8.0)
-  watir (~> 6.17.0)
+  terminal-table
+  watir
 
 BUNDLED WITH
    2.1.4
