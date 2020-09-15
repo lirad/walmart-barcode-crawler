@@ -1,4 +1,4 @@
-require("./lib/walmart.rb")
+require('./lib/walmart.rb')
 
 describe WalmartMx do
   # let(:walmart) { WalmartMx.new }

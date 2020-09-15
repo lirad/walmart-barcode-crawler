@@ -1,20 +1,20 @@
-require_relative("crawler.rb")
-require "watir"
-require "nokogiri"
+require_relative('crawler.rb')
+require 'watir'
+require 'nokogiri'
 
 class WalmartMx < Crawler
   attr_reader :crawled_products, :crawled_counter, :crawler_errors, :valid_product
 
   @crawled_html = nil
-  
+
   def initialize(bar_codes = [])
     @crawled_counter = 0
     @crawler_errors = []
     @bar_codes = bar_codes
     @crawled_products = {}
     @crawler = Crawler.new
-    @crawler.browser.goto "https://super.walmart.com.mx/"
-    @crawler.browser.element(class: "button_icon__1dMbF").click
+    @crawler.browser.goto 'https://super.walmart.com.mx/'
+    @crawler.browser.element(class: 'button_icon__1dMbF').click
   end
 
   def crawl_products(bar_code)
@@ -37,9 +37,9 @@ class WalmartMx < Crawler
   end
 
   def product_validation
-    @valid_product = @page.css("#scrollToTopComponent > section > div > h2")
-    @valid_product = valid_product.text.empty? ? true : false   
-    return @valid_product
+    @valid_product = @page.css('#scrollToTopComponent > section > div > h2')
+    @valid_product = valid_product.text.empty? ? true : false
+    @valid_product
   end
 
   def create_record(index)
@@ -53,11 +53,10 @@ class WalmartMx < Crawler
     @crawled_products[index] = {
       "ProductName": product_name.text,
       "Price": product_price.text, "Size": product_size,
-      "Weight": product_weight, "Retail": "Walmart",
+      "Weight": product_weight, "Retail": 'Walmart'
     }
     @crawled_counter += 1
   end
-
 
   def bar_code_loop
     @bar_codes.each_with_index do |n, index|
