@@ -3,7 +3,7 @@ require 'watir'
 require 'nokogiri'
 
 class WalmartMx < Crawler
-  attr_reader :crawled_products, :crawled_counter, :crawler_errors, :valid_product
+  attr_reader :crawled_products, :crawled_counter, :crawler_errors, :valid_product, :current_crawling
 
   @crawled_html = nil
 
@@ -55,6 +55,7 @@ class WalmartMx < Crawler
       "Price": product_price.text, "Size": product_size,
       "Weight": product_weight, "Retail": 'Walmart'
     }
+    @current_crawling =  @crawled_products[index]
     @crawled_counter += 1
   end
 

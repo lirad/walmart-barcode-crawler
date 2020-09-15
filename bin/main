@@ -12,6 +12,7 @@ puts "👀 #{bar_codes.length} bar code(s) detected"
 
 puts '⚡ Started crawling'
 walmart.bar_code_loop
+puts "📦 #{walmart.crawled_products[index]}"
 crawled_products = walmart.crawled_products
 crawler_errors = walmart.crawler_errors
 puts "🏁 Finished: #{walmart.crawled_counter} out of #{bar_codes.length} products crawled."
