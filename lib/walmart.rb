@@ -3,11 +3,11 @@ require "watir"
 require "nokogiri"
 
 class WalmartMx < Crawler
-  attr_reader :crawled_products, :crawled_counter, :crawler_errors
+  attr_reader :crawled_products, :crawled_counter, :crawler_errors, :valid_product
 
   @crawled_html = nil
   
-  def initialize(bar_codes)
+  def initialize(bar_codes = [])
     @crawled_counter = 0
     @crawler_errors = []
     @bar_codes = bar_codes
@@ -37,9 +37,9 @@ class WalmartMx < Crawler
   end
 
   def product_validation
-    valid_product = @page.css("#scrollToTopComponent > section > div > h2")
-    valid_product = valid_product.text.empty? ? true : false   
-    return valid_product
+    @valid_product = @page.css("#scrollToTopComponent > section > div > h2")
+    @valid_product = valid_product.text.empty? ? true : false   
+    return @valid_product
   end
 
   def create_record(index)
@@ -57,6 +57,7 @@ class WalmartMx < Crawler
     }
     @crawled_counter += 1
   end
+
 
   def bar_code_loop
     @bar_codes.each_with_index do |n, index|
