@@ -6,7 +6,11 @@ class FilesGenerator
 
   def read_input_csv
     bar_codes = CSV.read("./input/bar_codes.csv")
-    bar_codes = bar_codes.map {|n| n.join(', ')}
+    bar_codes = bar_codes.map do |n| 
+      if n.length == 1
+        n.join(', ')
+      end
+    end
     return bar_codes
   end
 
@@ -17,6 +21,6 @@ class FilesGenerator
         csv << [v[:ProductName], v[:Price], v[:Size], v[:Weight], v[:Retail]]
       end
     end
-    File.write('products.csv', data)
+    File.write('./output/products.csv', data)
   end
 end

@@ -3,11 +3,13 @@ require "watir"
 require "nokogiri"
 
 class WalmartMx < Crawler
-  attr_reader :crawled_products
+  attr_reader :crawled_products, :crawled_counter
 
   @crawled_html = nil
+  
 
   def initialize(bar_codes)
+    @crawled_counter = 0
     @bar_codes = bar_codes
     @crawled_products = {}
     @crawler = Crawler.new
@@ -53,6 +55,7 @@ class WalmartMx < Crawler
       "Price": product_price.text, "Size": product_size,
       "Weight": product_weight, "Retail": "Walmart",
     }
+    @crawled_counter += 1
   end
 
   def bar_code_loop

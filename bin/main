@@ -3,23 +3,18 @@ require_relative('../lib/crawler.rb')
 require_relative('../lib/walmart.rb')
 require_relative('../lib/files_generator.rb')
 
-# bar_codes = %w[00779129302256 00779129302553 00750630624418 00779129302263 00779129302259
-#                00779129303822 00779129303779 00779129302258 00779129303780 00007940005291
-#                00007940030054 00750630621496 00750630621497 00000007506301 00000007506299]
-
-# bar_codes = %w[00779129302256 00779129302553]
-
-
 files_generator = FilesGenerator.new
 
-puts 'Verifying bar codes input files'
+puts '📦 Verifying bar codes input files'
 bar_codes = files_generator.read_input_csv
 walmart = WalmartMx.new(bar_codes)
+puts "✅ #{bar_codes.length} bar code(s) detected"
 
-puts 'Starting loop'
+puts '⚡ Started crawling'
 walmart.bar_code_loop
 crawled_products = walmart.crawled_products
+puts "🏁 Finished: #{walmart.crawled_counter} out of #{bar_codes.length} products crawled."
 
-puts 'Generating output file'
+puts '📂 Generating output file'
 files_generator = FilesGenerator.new
 files_generator.generate_output_csv(crawled_products)
