@@ -56,6 +56,7 @@ class WalmartMx < Crawler
       "Weight": product_weight, "Retail": 'Walmart'
     }
     @current_crawling = @crawled_products[index]
+    puts "✅ #{index+1}. #{@current_crawling[:ProductName]} crawled!"
     @crawled_counter += 1
   end
 

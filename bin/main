@@ -15,11 +15,10 @@ walmart.bar_code_loop
 crawled_products = walmart.crawled_products
 crawler_errors = walmart.crawler_errors
 puts "🏁 Finished: #{walmart.crawled_counter} out of #{bar_codes.length} products crawled."
-
-puts '📂 Generating output file'
 files_generator = FilesGenerator.new
 files_generator.generate_output_csv(crawled_products)
-puts '✅ Sucessful Crawls'
+puts '📂 Generated output file at ("./output/products.csv")'
+puts '📋 Sucessful Crawls'
 puts files_generator.table_generator(crawled_products)
 puts '❌ Crawling errors'
 puts files_generator.table_errors(crawler_errors)
