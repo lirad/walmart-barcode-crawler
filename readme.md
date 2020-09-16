@@ -14,7 +14,7 @@ My version of the Slack bot will return basic concepts of ruby as a reminder to 
 
 ## Video Explanation
 
-Here is the [video explanation](https://www.loom.com/share/c6738ee94321498bacc9f3c6eb38448e) of this project.
+Here is the [video explanation](https://www.loom.com/share/fe7e6d6b89be4cdc93f67d9be69795ff) of this project.
 
 ## Prerequisities
 
