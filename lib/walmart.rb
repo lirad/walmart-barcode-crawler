@@ -17,6 +17,16 @@ class WalmartMx < Crawler
     @crawler.browser.element(class: 'button_icon__1dMbF').click
   end
 
+  def bar_code_loop
+    @bar_codes.each_with_index do |n, index|
+      @crawled_html = crawl_products(n)
+      @page = Nokogiri::HTML.parse(@crawled_html)
+      product_validation ? create_record(index) : @crawler_errors << n
+    end
+  end
+
+  private
+
   def crawl_products(bar_code)
     @crawler.browser.goto "https://super.walmart.com.mx/productos?Ntt=#{bar_code}"
     sleep(3)
@@ -56,15 +66,7 @@ class WalmartMx < Crawler
       "Weight": product_weight, "Retail": 'Walmart'
     }
     @current_crawling = @crawled_products[index]
-    puts "✅ #{index + 1}. #{@current_crawling[:ProductName]} crawled!"
     @crawled_counter += 1
-  end
-
-  def bar_code_loop
-    @bar_codes.each_with_index do |n, index|
-      @crawled_html = crawl_products(n)
-      @page = Nokogiri::HTML.parse(@crawled_html)
-      product_validation ? create_record(index) : @crawler_errors << n
-    end
+    puts "✅ #{index + 1}. #{@current_crawling[:ProductName]} crawled!"
   end
 end
