@@ -24,7 +24,7 @@ To get this project up and running locally, you must already have ruby and neces
 
 **Step 1**<br>
 Navigate through the local folder where you want to clone the repository and write<br>
-``` git clone https://github.com/lirad/walmart-barcode-crawler/tree/scraper-design```. It will clone the repo to your local folder.<br>
+```https://github.com/lirad/walmart-barcode-crawler.git```. It will clone the repo to your local folder.<br>
 or with https<br>
 ```git clone https://github.com/lirad/walmart-barcode-crawler.git```.<br>
 **Step 2**<br>
