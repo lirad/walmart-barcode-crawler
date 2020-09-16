@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require('./lib/files_generator.rb')
 
 describe FilesGenerator do
@@ -13,7 +11,7 @@ describe FilesGenerator do
   describe '#table_generator' do
     it 'Check if tables are being correctly generated' do
       generated_table = file_generator.table_generator(crawled_products)
-      expected_table = "+----------------------------------------------------------------------------+--------+------+--------+---------+\n""| Product                                                                    | Price  | Size | Weight | Retail  |\n""+----------------------------------------------------------------------------+--------+------+--------+---------+\n""| Antitranspirante Rexona men motion sense v8 en aerosol para caballero 90 g | $47.00 | 90   | g      | Walmart |\n"'+----------------------------------------------------------------------------+--------+------+--------+---------+'
+      expected_table = "+----------------------------------------------------------------------------+--------+------+--------+---------+\n| Product                                                                    | Price  | Size | Weight | Retail  |\n+----------------------------------------------------------------------------+--------+------+--------+---------+\n| Antitranspirante Rexona men motion sense v8 en aerosol para caballero 90 g | $47.00 | 90   | g      | Walmart |\n+----------------------------------------------------------------------------+--------+------+--------+---------+"
       expect(expected_table).to eq(generated_table.to_s)
     end
   end

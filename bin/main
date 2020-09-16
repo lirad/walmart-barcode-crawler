@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
-# frozen_string_literal: true
-
 require_relative('../lib/crawler.rb')
 require_relative('../lib/walmart.rb')
 require_relative('../lib/files_generator.rb')
