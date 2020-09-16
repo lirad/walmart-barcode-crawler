@@ -1,5 +1,6 @@
+# frozen_string_literal: true
+
 require 'watir'
-require 'headless'
 
 class Crawler
   attr_reader :browser

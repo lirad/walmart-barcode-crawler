@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative('crawler.rb')
 require 'watir'
 require 'nokogiri'
@@ -55,7 +57,7 @@ class WalmartMx < Crawler
       "Price": product_price.text, "Size": product_size,
       "Weight": product_weight, "Retail": 'Walmart'
     }
-    @current_crawling =  @crawled_products[index]
+    @current_crawling = @crawled_products[index]
     @crawled_counter += 1
   end
 
