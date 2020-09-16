@@ -1,7 +1,7 @@
 require 'csv'
 require 'terminal-table'
 
-class FilesGenerator
+module FilesGenerator
   def initialize; end
 
   def read_input_csv
