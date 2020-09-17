@@ -1,24 +1,17 @@
 #!/usr/bin/env ruby
-require_relative('../lib/crawler.rb')
-require_relative('../lib/walmart.rb')
-require_relative('../lib/files_generator.rb')
+require_relative '../lib/application.rb'
 
-include FilesGenerator
-
+app = Application.new
 
 puts '📦 Verifying bar codes input files'
-bar_codes = FilesGenerator.read_input_csv
-walmart = WalmartMx.new(bar_codes)
+bar_codes = app.read_input_csv
+app.crawler_start(bar_codes)
 puts "👀 #{bar_codes.length} bar code(s) detected"
-
 puts '⚡ Started crawling'
-walmart.bar_code_loop
-crawled_products = walmart.crawled_products
-crawler_errors = walmart.crawler_errors
-puts "🏁 Finished: #{walmart.crawled_counter} out of #{bar_codes.length} products crawled."
-FilesGenerator.generate_output_csv(crawled_products)
+puts "🏁 Finished: #{app.crawled_counter} out of #{bar_codes.length} products crawled."
+app.generate_output_csv(app.crawled_products)
 puts '📂 Generated output file at ("./output/products.csv")'
 puts '📋 Sucessful Crawls'
-puts FilesGenerator.table_generator(crawled_products)
+puts app.table_generator(app.crawled_products)
 puts '❌ Crawling errors'
-puts FilesGenerator.table_errors(crawler_errors)
+puts app.table_errors(app.crawler_errors)

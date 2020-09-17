@@ -2,8 +2,6 @@ require 'csv'
 require 'terminal-table'
 
 module FilesGenerator
-  def initialize; end
-
   def read_input_csv
     if File.exist?('./input/bar_codes.csv')
       bar_codes = CSV.read('./input/bar_codes.csv')
