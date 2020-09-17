@@ -3,11 +3,13 @@ require 'terminal-table'
 
 module FilesGenerator
   def read_input_csv
+    # rubocop:disable Style/GuardClause
     if File.exist?('./input/bar_codes.csv')
       bar_codes = CSV.read('./input/bar_codes.csv')
     else
       raise 'Bar codes files missing, add a bar_codes.csv file to the input folder.'
     end
+    # rubocop:enable Style/GuardClause
     bar_codes = bar_codes.map do |n|
       n.join(', ') if n.length == 1
     end
