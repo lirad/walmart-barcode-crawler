@@ -3,7 +3,7 @@ require('./lib/walmart.rb')
 describe WalmartMx do
   let(:walmart) { WalmartMx.new }
   let(:bar_code_true) { ['00779129302256'] }
-  let(:bar_code_false) { ['00779129'] }
+  let(:bar_code_false) { ['0077912'] }
   let(:product_name) { 'Antitranspirante Rexona men motion sense v8 en aerosol para caballero 90 g' }
 
   describe '#crawl_products' do
