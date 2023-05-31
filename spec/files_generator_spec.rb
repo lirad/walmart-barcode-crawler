@@ -21,7 +21,7 @@ describe FilesGenerator do
     it 'Check if tables are not being correctly generated' do
       generated_table = files_generator.table_generator(crawled_products)
       expected_table = '+--+'
-      expect(expected_table).to_not eq(generated_table.to_s)
+      expect(expected_table).not_to eq(generated_table.to_s)
     end
   end
 
@@ -33,7 +33,7 @@ describe FilesGenerator do
 
     it 'Check if files with products are not being generated' do
       files_generator.generate_output_csv(crawled_products)
-      expect(File.exist?('./output/products.csv')).not_to eq(false)
+      expect(File.exist?('./output/products.csv')).to_not eq(false)
     end
   end
 end
